@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  mailhog:
+    build:
+      context: ./mailhog
+    container_name: mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - testnet
+
+  web:
+    build:
+      context: ./web
+    container_name: mailhog-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mailhog
+    networks:
+      - testnet
+
+networks:
+  testnet:
+    driver: bridge
+

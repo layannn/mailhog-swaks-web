@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Send swaks to MailHog</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: system-ui, -apple-system,Segoe UI,Roboto,Helvetica,Arial; padding: 2rem; max-width: 720px; margin:auto; }
+    label { display:block; margin-top:1rem; }
+    input { width:100%; padding:.5rem; font-size:1rem; }
+    button { margin-top:1rem; padding:.6rem 1rem; font-size:1rem; }
+    pre { background:#f6f6f6; padding:1rem; white-space:pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Send test email (swaks → MailHog)</h1>
+  <p>Enter the MailHog SMTP IP (or hostname) and port (default <code>1025</code>), then click <em>Send</em>.</p>
+
+  <form id="form">
+    <label>MailHog host (IP or hostname)
+      <input type="text" id="host" name="host" placeholder="mailhog or 127.0.0.1" required>
+    </label>
+
+    <label>MailHog SMTP port
+      <input type="number" id="port" name="port" placeholder="1025" required>
+    </label>
+
+    <button type="submit">Send</button>
+  </form>
+
+  <h3>Result</h3>
+  <pre id="result">No action yet.</pre>
+
+  <script>
+    const form = document.getElementById('form');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      result.textContent = 'Sending...';
+      const host = document.getElementById('host').value.trim();
+      const port = document.getElementById('port').value.trim();
+
+      try {
+        const r = await fetch('/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ host, port })
+        });
+        const json = await r.json();
+        result.textContent = JSON.stringify(json, null, 2);
+      } catch (err) {
+        result.textContent = 'Request failed: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
+

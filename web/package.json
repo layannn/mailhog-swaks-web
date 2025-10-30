@@ -1,0 +1,16 @@
+{
+  "name": "mailhog-swaks-web",
+  "version": "1.0.0",
+  "description": "Simple UI to send swaks test messages to MailHog",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "helmet": "^7.0.0",
+    "express-rate-limit": "^7.0.0",
+    "body-parser": "^1.20.2"
+  }
+}
+
